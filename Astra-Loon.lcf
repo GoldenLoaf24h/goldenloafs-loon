@@ -1,0 +1,769 @@
+# GoldenLoaf's Loon
+# 公开模板：已删除私人机场订阅、机场专用解析域名和个人 MitM 证书。
+# 使用前请在本文件的 [Remote Proxy] 段添加自己的机场订阅。
+# 建议在 Loon App 中设置：运行模式 RULE；DoH 流量模式 RULE；查询回落 OFF。
+
+[General]
+# IP查询模式
+ip-mode = v4-only
+# IPv6 TUN
+ipv6-vif = off
+# 普通 DNS 仅供兼容；导入后必须关闭 App 的“查询回落”
+dns-server = 223.5.5.5,119.29.29.29
+# 默认海外解析；App 的“DoH 流量模式”必须为 RULE
+doh-server = https://1.1.1.1/dns-query,https://8.8.8.8/dns-query
+# DNS劫持
+hijack-dns = *:53
+# 真实IP解析域名列表 (Steam/主机/游戏/语音直连解析)
+real-ip = *.msftconnecttest.com,*.msftncsi.com,*.srv.nintendo.net,*.stun.playstation.net,xbox.*.microsoft.com,*.xboxlive.com,*.battlenet.com.cn,*.battlenet.com,*.blzstatic.cn,*.battle.net,*.cm.steampowered.com,*.steamserver.net,*.cmpassport.com,id6.me,open.e.189.cn,*.cmbchina.com,*.pingan.com.cn,*.music.163.com,*.126.net,*.y.qq.com,*.kuwo.cn,*.kugou.com,pool.ntp.org,*.pool.ntp.org,time.*.apple.com,time.*.com
+# Wi-Fi共享端口
+wifi-access-http-port = 7222
+wifi-access-socks5-port = 7221
+allow-wifi-access = false
+mitm-on-wifi-access = true
+# 测速超时
+test-timeout = 5
+# 网络接口
+interface-mode = auto
+# 域名拦截模式
+domain-reject-mode = DNS
+dns-reject-mode = LoopbackIP
+# SNI探测
+sni-sniffing = true
+# 直连丢弃STUN
+disable-stun = false
+# UDP回落策略
+udp-fallback-mode = REJECT
+disconnect-on-policy-change = true
+# 连通性测试URL
+internet-test-url = http://connectivitycheck.platform.hicloud.com/generate_204
+proxy-test-url = https://www.gstatic.com/generate_204
+# 资源解析器
+resource-parser = https://github.com/sub-store-org/Sub-Store/releases/latest/download/sub-store-parser.loon.min.js
+# GeoIP与ASN数据
+geoip-url = https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb
+ipasn-url = https://loon.103516.xyz/GeoData/GeoLite2-ASN-P3TERX.mmdb
+# 绕过代理
+skip-proxy = 192.168.0.0/16,10.0.0.0/8,172.16.0.0/12,localhost,*.local,captive.apple.com,224.0.0.251
+# 绕过路由
+bypass-tun = 127.0.0.0/8,169.254.0.0/16,224.0.0.0/4,255.255.255.255/32
+
+[Proxy]
+
+
+[Remote Proxy]
+# 在此添加自己的机场订阅，例如：
+# MyAirport = <你的私有订阅地址>
+# 不要把自己的订阅地址或 token 提交到公开仓库。
+
+[Remote Filter]
+低倍率 = NameRegex, FilterKey = "(?i)(?<![0-9.])0\.[0-9]+\s*(?:x|倍)(?![a-z0-9])|低倍率"
+Sub-ALL = NameRegex, FilterKey = "(?i)^(?=.*(.))(?!.*(群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|总计|到期|机场|下次|重置|重新|设置|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|超时|收藏|福利|好友|失联|(\b(USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author|Traffic)(\d+)?\b|(\d{4}-\d{2}-\d{2}|\dG)))).*$"
+Sub-HK = NameRegex, FilterKey = "(?i)香港|(\b(HK|HKG|Hong|Hong Kong)\b)"
+Sub-MO = NameRegex, FilterKey = "(?i)澳门|(\b(MO|MAC|Macau|Macao)\b)"
+Sub-TW = NameRegex, FilterKey = "(?i)台湾|台北|(\b(TW|TWN|Tai|Taiwan)\b)"
+Sub-JP = NameRegex, FilterKey = "(?i)日本|川日|东京|大阪|泉日|埼玉|(\b(JP|JPN|Japan)\b)"
+Sub-KR = NameRegex, FilterKey = "(?i)韩国|韩|首尔|(\b(KR|KOR|Korea|Seoul)\b)"
+Sub-SG = NameRegex, FilterKey = "(?i)新加坡|新国|狮|(\b(SG|SGP|Singapore)\b)"
+Sub-US = NameRegex, FilterKey = "(?i)美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(\b(US|USA|United States|America)\b)"
+Sub-UK = NameRegex, FilterKey = "(?i)英国|伦敦|(\b(UK|GB|GBR|United Kingdom|Britain)\b)"
+Sub-RA = NameRegex, FilterKey = "(?i)^(?=.*(.*))(?!.*(德国|德國|法兰克福|法蘭克福|柏林|香港|澳门|台湾|日本|川日|东京|大阪|泉日|埼玉|韩国|韩|首尔|新加坡|狮|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|英国|伦敦|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|总计|到期|机场|下次|重置|重新|设置|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|超时|收藏|福利|好友|失联|回国|校园|游戏|免登|(\b(DE|DEU|Germany|Frankfurt|Berlin|HK|HKG|Hong|Hong Kong|MO|MAC|Macau|Macao|TW|TWN|Tai|Taiwan|JP|JPN|Japan|KR|KOR|Korea|SG|SGP|Singapore|US|USA|United States|America|UK|GB|GBR|United Kingdom|Britain|USE|USED|TOTAL|EXPIRE|EMAIL|GAME|Panel|Channel|Author|Traffic)(\d+)?\b|(\d{4}-\d{2}-\d{2}|\dG)))).*$"
+Sub-DE = NameRegex, FilterKey = "(?i)德国|德國|法兰克福|法蘭克福|柏林|\b(DE|DEU|Germany|Frankfurt|Berlin)\b"
+Sub-家宽 = NameRegex, FilterKey = "(?i)^(?!.*美国12家宽)(?=.*(?:家宽|住宅|家庭宽带|原生家宽|Residential|\bHome\b|Broadband|Cable|Fiber|\bISP\b|FTTH)).*$"
+
+[Proxy Group]
+时延优选 = url-test,Sub-ALL,interval = 300,tolerance = 80,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png
+手动选择 = select,故障转移,时延优选,家宽组,香港节点,台湾节点,日本节点,韩国节点,新加坡节点,美国节点,英国节点,德国节点,澳门节点,其他地区,全部节点,img-url = https://loon.103516.xyz/Icon/Other-Icon/Select.png
+全部节点 = select,Sub-ALL,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/World_Map.png
+故障转移 = fallback,Sub-ALL,interval = 180,max-timeout = 5000,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/ViuTV.png
+负载均衡 = load-balance,香港节点,澳门节点,台湾节点,日本节点,韩国节点,新加坡节点,美国节点,英国节点,interval = 300,max-timeout = 2000,algorithm = pcc,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png
+低-倍率 = url-test,低倍率,interval = 180,tolerance = 80,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cellular.png
+防被墙 = url-test,美国节点,日本节点,新加坡节点,interval = 180,tolerance = 50,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Clubhouse_2.png
+AI = select,防被墙,家宽组,新加坡节点,日本节点,手动选择,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bot.png
+Siri AI = select,防被墙,美国节点,日本节点,新加坡节点,家宽组,img-url = https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Siri.png
+Claude = select,家宽组,新加坡节点,日本节点,手动选择,img-url = https://fastly.jsdelivr.net/gh/Hawaiine/Oasisic-Icons@main/icons/AI/Anthropic/Anthropic.png
+ChatGPT = select,防被墙,家宽组,新加坡节点,日本节点,手动选择,img-url = https://fastly.jsdelivr.net/gh/Hawaiine/Oasisic-Icons@main/icons/AI/OpenAI/OpenAI.png
+Gemini = select,防被墙,家宽组,新加坡节点,日本节点,手动选择,img-url = https://fastly.jsdelivr.net/gh/Hawaiine/Oasisic-Icons@main/icons/Google/GoogleAI/GoogleAI.png
+Google = select,防被墙,家宽组,新加坡节点,日本节点,手动选择,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Search.png
+GitHub = select,低-倍率,故障转移,家宽组,手动选择,img-url = https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/GitHub.png
+TikTok = select,家宽组,日本节点,新加坡节点,手动选择,img-url = https://loon.103516.xyz/Icon/App-Icon/TikTok-02.png
+YouTube = select,低-倍率,时延优选,美国节点,新加坡节点,香港节点,日本节点,手动选择,DIRECT,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png
+X = select,防被墙,新加坡节点,香港节点,美国节点,日本节点,时延优选,手动选择,img-url = https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/X.png
+Telegram = select,低-倍率,时延优选,防被墙,新加坡节点,香港节点,美国节点,日本节点,手动选择,DIRECT,负载均衡,img-url = https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Telegram.png
+Instagram = select,时延优选,香港节点,新加坡节点,日本节点,美国节点,手动选择,img-url = https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Instagram.png
+Microsoft = select,时延优选,DIRECT,香港节点,美国节点,手动选择,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png
+Apple = select,DIRECT,时延优选,美国节点,手动选择,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Apple_1.png
+Steam = select,DIRECT,时延优选,香港节点,台湾节点,日本节点,手动选择,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Steam.png
+Game = select,DIRECT,时延优选,香港节点,台湾节点,日本节点,手动选择,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png
+Bybit = select,日本节点,台湾节点,新加坡节点,香港节点,美国节点,手动选择,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cryptocurrency_3.png
+全球拦截 = select,REJECT,REJECT-DROP,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AdWhite.png
+兜底分流 = select,故障转移,时延优选,手动选择,低-倍率,DIRECT,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Final_1.png
+家宽组 = select,美国12家宽,Sub-家宽,img-url = https://fastly.jsdelivr.net/gh/Hawaiine/Oasisic-Icons@main/icons/Country/US/US.png
+香港节点 = url-test,Sub-HK,interval = 300,tolerance = 50,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png
+澳门节点 = url-test,Sub-MO,interval = 300,tolerance = 50,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Macao.png
+台湾节点 = url-test,Sub-TW,interval = 300,tolerance = 50,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Taiwan.png
+日本节点 = url-test,Sub-JP,interval = 300,tolerance = 50,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png
+韩国节点 = url-test,Sub-KR,interval = 300,tolerance = 50,img-url = https://fastly.jsdelivr.net/gh/Hawaiine/Oasisic-Icons@main/icons/Country/Korea/Korea.png
+新加坡节点 = url-test,Sub-SG,interval = 300,tolerance = 50,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png
+美国节点 = url-test,Sub-US,interval = 300,tolerance = 50,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Australia.png
+英国节点 = url-test,Sub-UK,interval = 300,tolerance = 50,img-url = https://fastly.jsdelivr.net/gh/Hawaiine/Oasisic-Icons@main/icons/Country/UK/UK.png
+德国节点 = url-test,Sub-DE,interval = 300,tolerance = 80,img-url = https://fastly.jsdelivr.net/gh/Hawaiine/Oasisic-Icons@main/icons/Country/Germany/Germany.png
+其他地区 = url-test,Sub-RA,interval = 300,tolerance = 50,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png
+
+[Proxy Chain]
+
+
+[Rule]
+# 本地仅放必要例外；来源优先级：本地 > 插件 > 订阅，FINAL 最后兜底。
+AND,((PROTOCOL,TCP),(DEST-PORT,53)),REJECT
+DOMAIN-SUFFIX,gh-proxy.com,DIRECT
+DOMAIN-SUFFIX,gh-proxy.org,DIRECT
+DOMAIN-SUFFIX,ghfast.top,DIRECT
+DOMAIN-SUFFIX,ghproxy.net,DIRECT
+DOMAIN-SUFFIX,browserleaks.com,家宽组
+DOMAIN-SUFFIX,browserleaks.org,家宽组
+DOMAIN-SUFFIX,dnsleaktest.com,家宽组
+DOMAIN-SUFFIX,dnsleak.com,家宽组
+DOMAIN-SUFFIX,ipleak.net,家宽组
+DOMAIN-SUFFIX,ipleak.com,防被墙
+DOMAIN,dns.alidns.com,DIRECT
+DOMAIN,accounts.google.com,家宽组
+DOMAIN,challenges.cloudflare.com,家宽组
+IP-CIDR,1.1.1.1/32,家宽组,no-resolve
+IP-CIDR,8.8.8.8/32,家宽组,no-resolve
+IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
+IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+IP-CIDR,91.105.192.0/23,Telegram,no-resolve
+IP-CIDR,185.76.151.0/24,Telegram,no-resolve
+DOMAIN-SUFFIX,local,DIRECT
+DOMAIN-SUFFIX,lan,DIRECT
+DOMAIN-SUFFIX,home.arpa,DIRECT
+DOMAIN-SUFFIX,ixigua.com,DIRECT
+DOMAIN-SUFFIX,snssdk.com,DIRECT
+DOMAIN-SUFFIX,qlogo.cn,DIRECT
+DOMAIN-SUFFIX,qpic.cn,DIRECT
+DOMAIN-SUFFIX,servicewechat.com,DIRECT
+DOMAIN-SUFFIX,wechat.com,DIRECT
+DOMAIN,lf16-effectcdn.byteeffecttos-g.com,TikTok
+DOMAIN,lf16-pkgcdn.pitaya-clientai.com,TikTok
+DOMAIN,p16-tiktokcdn-com.akamaized.net,TikTok
+DOMAIN-SUFFIX,bytegecko-i18n.com,TikTok
+DOMAIN-SUFFIX,byteintlapi.com,TikTok
+DOMAIN-SUFFIX,byteoversea.com,TikTok
+DOMAIN-SUFFIX,capcut.com,TikTok
+DOMAIN-SUFFIX,capcutapi.com,TikTok
+DOMAIN-SUFFIX,capcutapi.us,TikTok
+DOMAIN-SUFFIX,capcutstatic.com,TikTok
+DOMAIN-SUFFIX,ibytedtos.com,TikTok
+DOMAIN-SUFFIX,ibyteimg.com,TikTok
+DOMAIN-SUFFIX,ipstatp.com,TikTok
+DOMAIN-SUFFIX,isnssdk.com,TikTok
+DOMAIN-SUFFIX,muscdn.com,TikTok
+DOMAIN-SUFFIX,musical.ly,TikTok
+DOMAIN-SUFFIX,sgpstatp.com,TikTok
+DOMAIN-SUFFIX,tik-tokapi.com,TikTok
+DOMAIN-SUFFIX,tiktok-minis.com,TikTok
+DOMAIN-SUFFIX,tiktok-row.net,TikTok
+DOMAIN-SUFFIX,tiktok.com,TikTok
+DOMAIN-SUFFIX,tiktokcdn-eu.com,TikTok
+DOMAIN-SUFFIX,tiktokcdn-us.com,TikTok
+DOMAIN-SUFFIX,tiktokcdn-us.com.edgesuite.net,TikTok
+DOMAIN-SUFFIX,tiktokcdn.com,TikTok
+DOMAIN-SUFFIX,tiktokcdn.com.akamaized.net,TikTok
+DOMAIN-SUFFIX,tiktokcdn.com.edgesuite.net,TikTok
+DOMAIN-SUFFIX,tiktokd.net,TikTok
+DOMAIN-SUFFIX,tiktokd.org,TikTok
+DOMAIN-SUFFIX,tiktokeu-cdn.com,TikTok
+DOMAIN-SUFFIX,tiktokglobalshopv.com,TikTok
+DOMAIN-SUFFIX,tiktokminis.us,TikTok
+DOMAIN-SUFFIX,tiktokmusic.app,TikTok
+DOMAIN-SUFFIX,tiktokrow-cdn.com,TikTok
+DOMAIN-SUFFIX,tiktokv.com,TikTok
+DOMAIN-SUFFIX,tiktokv.com.edgekey.net,TikTok
+DOMAIN-SUFFIX,tiktokv.com.edgesuite.net,TikTok
+DOMAIN-SUFFIX,tiktokv.eu,TikTok
+DOMAIN-SUFFIX,tiktokv.us,TikTok
+DOMAIN-SUFFIX,tiktokw.eu,TikTok
+DOMAIN-SUFFIX,tiktokw.us,TikTok
+DOMAIN-SUFFIX,ttcdn-us.com,TikTok
+DOMAIN-SUFFIX,ttlivecdn.com,TikTok
+DOMAIN-SUFFIX,ttoverseaus.net,TikTok
+DOMAIN-SUFFIX,ttwebview.com,TikTok
+DOMAIN-SUFFIX,ttwstatic.com,TikTok
+DOMAIN,marscode.com,AI
+DOMAIN,github-api.arkoselabs.com,GitHub
+DOMAIN,github-production-release-asset-2e65be.s3.amazonaws.com,GitHub
+DOMAIN,github-production-repository-file-5c1aeb.s3.amazonaws.com,GitHub
+DOMAIN,github-production-repository-image-32fea6.s3.amazonaws.com,GitHub
+DOMAIN,github-production-upload-manifest-file-7fdce7.s3.amazonaws.com,GitHub
+DOMAIN,github-production-user-asset-6210df.s3.amazonaws.com,GitHub
+DOMAIN,productionresultssa0.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa1.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa2.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa3.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa4.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa5.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa6.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa7.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa8.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa9.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa10.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa11.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa12.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa13.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa14.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa15.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa16.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa17.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa18.blob.core.windows.net,GitHub
+DOMAIN,productionresultssa19.blob.core.windows.net,GitHub
+DOMAIN-SUFFIX,gh.io,GitHub
+DOMAIN-SUFFIX,ghe.com,GitHub
+DOMAIN-SUFFIX,github.ai,GitHub
+DOMAIN-SUFFIX,github.career,GitHub
+DOMAIN-SUFFIX,githubsupport.com,GitHub
+DOMAIN-SUFFIX,octocaptcha.com,GitHub
+DOMAIN,monitor-frontend-collector.a.bybit-aws.com,Bybit
+DOMAIN-SUFFIX,bybit.com,Bybit
+DOMAIN-SUFFIX,bybit.biz,Bybit
+DOMAIN-SUFFIX,bybdc6.com,Bybit
+DOMAIN-SUFFIX,byabcde.com,Bybit
+DOMAIN-SUFFIX,byapps.net,Bybit
+DOMAIN-SUFFIX,byd3c3.com,Bybit
+DOMAIN-SUFFIX,bybit.cloud,Bybit
+DOMAIN-SUFFIX,bybit.global,Bybit
+DOMAIN-SUFFIX,bybit.co.kr,Bybit
+DOMAIN-SUFFIX,bybit.com.br,Bybit
+DOMAIN-SUFFIX,bybitapi.com,Bybit
+DOMAIN-SUFFIX,bybit.net,Bybit
+DOMAIN-SUFFIX,bybits.org,Bybit
+DOMAIN-SUFFIX,epicgames.com,Game
+DOMAIN-SUFFIX,nintendo.com,Game
+DOMAIN-SUFFIX,nintendo.net,Game
+DOMAIN-SUFFIX,playstation.net,Game
+GEOIP,CN,DIRECT,no-resolve
+FINAL,兜底分流
+
+[Remote Rule]
+https://gh-proxy.com/https://github.com/217heidai/adblockfilters/releases/download/rule/adblockloon.list, policy=REJECT, tag=广告拦截, enabled=true
+# Claude 按用户指定来源优先；不再叠加其他 Claude 规则集。
+https://cdn.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/loon/anthropic.list, policy=Claude, tag=Anthropic, enabled=true
+# Apple Intelligence / Siri 按用户指定完整来源，置于其他 Apple 规则之前。
+https://raw.githubusercontent.com/Serein1202/ProxyHome/refs/heads/main/Loon/Rule/AppleIntelligence/AppleIntelligence.list, policy=Siri AI, tag=AppleIntelligence, enabled=true
+# 其他分类规则使用固定的公开规则资产；版本目录不等于配置版本。
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticCore.lsr, policy=DIRECT, tag=DomesticCore, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticSupplement.lsr, policy=DIRECT, tag=DomesticSupplement, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/DomesticAI.lsr, policy=DIRECT, tag=DomesticAI, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/ChatGPT.lsr, policy=ChatGPT, tag=ChatGPT, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Gemini.lsr, policy=Gemini, tag=Gemini, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AIScoped.lsr, policy=AI, tag=AIScoped, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/GitHub.lsr, policy=GitHub, tag=GitHub, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SharedInfrastructure.lsr, policy=故障转移, tag=SharedInfrastructure, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SteamCN.lsr, policy=DIRECT, tag=SteamCN, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/SteamGlobal.lsr, policy=Steam, tag=SteamGlobal, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/YouTube.lsr, policy=YouTube, tag=YouTube, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Bilibili.lsr, policy=DIRECT, tag=Bilibili, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Telegram.lsr, policy=Telegram, tag=Telegram, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Instagram.lsr, policy=Instagram, tag=Instagram, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Twitter.lsr, policy=X, tag=Twitter, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/AppleOTA.lsr, policy=Apple, tag=AppleOTA, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Google.lsr, policy=Google, tag=Google, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Microsoft.lsr, policy=Microsoft, tag=Microsoft, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Apple.lsr, policy=Apple, tag=Apple, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.3/Steam.lsr, policy=Steam, tag=Steam, enabled=true
+https://raw.githubusercontent.com/YohakuSama/loonkit/673e2b470b45f291ebf15bbf9dca232d10709bad/rules/releases/v7.0.5/ChinaDirect.lsr, policy=DIRECT, tag=ChinaDirect-Scoped, enabled=true
+
+[Host]
+# 国内 CDN 直连加密解析；未匹配域名使用 General 的海外 DoH。
+dns.alidns.com = 223.5.5.5
+10010.cn = server:https://dns.alidns.com/dns-query
+*.10010.cn = server:https://dns.alidns.com/dns-query
+10010.com = server:https://dns.alidns.com/dns-query
+*.10010.com = server:https://dns.alidns.com/dns-query
+123865.com = server:https://dns.alidns.com/dns-query
+*.123865.com = server:https://dns.alidns.com/dns-query
+123912.com = server:https://dns.alidns.com/dns-query
+*.123912.com = server:https://dns.alidns.com/dns-query
+123pan.cn = server:https://dns.alidns.com/dns-query
+*.123pan.cn = server:https://dns.alidns.com/dns-query
+123pan.com = server:https://dns.alidns.com/dns-query
+*.123pan.com = server:https://dns.alidns.com/dns-query
+126.com = server:https://dns.alidns.com/dns-query
+*.126.com = server:https://dns.alidns.com/dns-query
+126.net = server:https://dns.alidns.com/dns-query
+*.126.net = server:https://dns.alidns.com/dns-query
+127.net = server:https://dns.alidns.com/dns-query
+*.127.net = server:https://dns.alidns.com/dns-query
+163.com = server:https://dns.alidns.com/dns-query
+*.163.com = server:https://dns.alidns.com/dns-query
+163yun.com = server:https://dns.alidns.com/dns-query
+*.163yun.com = server:https://dns.alidns.com/dns-query
+178.com = server:https://dns.alidns.com/dns-query
+*.178.com = server:https://dns.alidns.com/dns-query
+360buy.com = server:https://dns.alidns.com/dns-query
+*.360buy.com = server:https://dns.alidns.com/dns-query
+360buyimg.com = server:https://dns.alidns.com/dns-query
+*.360buyimg.com = server:https://dns.alidns.com/dns-query
+95516.com = server:https://dns.alidns.com/dns-query
+*.95516.com = server:https://dns.alidns.com/dns-query
+abchina.com = server:https://dns.alidns.com/dns-query
+*.abchina.com = server:https://dns.alidns.com/dns-query
+alicdn.com = server:https://dns.alidns.com/dns-query
+*.alicdn.com = server:https://dns.alidns.com/dns-query
+alipay.com = server:https://dns.alidns.com/dns-query
+*.alipay.com = server:https://dns.alidns.com/dns-query
+alipayobjects.com = server:https://dns.alidns.com/dns-query
+*.alipayobjects.com = server:https://dns.alidns.com/dns-query
+aliyun.com = server:https://dns.alidns.com/dns-query
+*.aliyun.com = server:https://dns.alidns.com/dns-query
+aliyundrive.com = server:https://dns.alidns.com/dns-query
+*.aliyundrive.com = server:https://dns.alidns.com/dns-query
+amap.com = server:https://dns.alidns.com/dns-query
+*.amap.com = server:https://dns.alidns.com/dns-query
+amemv.com = server:https://dns.alidns.com/dns-query
+*.amemv.com = server:https://dns.alidns.com/dns-query
+b23.tv = server:https://dns.alidns.com/dns-query
+*.b23.tv = server:https://dns.alidns.com/dns-query
+baidu.com = server:https://dns.alidns.com/dns-query
+*.baidu.com = server:https://dns.alidns.com/dns-query
+bdimg.com = server:https://dns.alidns.com/dns-query
+*.bdimg.com = server:https://dns.alidns.com/dns-query
+bdstatic.com = server:https://dns.alidns.com/dns-query
+*.bdstatic.com = server:https://dns.alidns.com/dns-query
+bh3.com = server:https://dns.alidns.com/dns-query
+*.bh3.com = server:https://dns.alidns.com/dns-query
+biliapi.com = server:https://dns.alidns.com/dns-query
+*.biliapi.com = server:https://dns.alidns.com/dns-query
+biliapi.net = server:https://dns.alidns.com/dns-query
+*.biliapi.net = server:https://dns.alidns.com/dns-query
+bilibili.com = server:https://dns.alidns.com/dns-query
+*.bilibili.com = server:https://dns.alidns.com/dns-query
+bilivideo.cn = server:https://dns.alidns.com/dns-query
+*.bilivideo.cn = server:https://dns.alidns.com/dns-query
+bilivideo.com = server:https://dns.alidns.com/dns-query
+*.bilivideo.com = server:https://dns.alidns.com/dns-query
+bytecdn.cn = server:https://dns.alidns.com/dns-query
+*.bytecdn.cn = server:https://dns.alidns.com/dns-query
+bytedance.com = server:https://dns.alidns.com/dns-query
+*.bytedance.com = server:https://dns.alidns.com/dns-query
+byteimg.com = server:https://dns.alidns.com/dns-query
+*.byteimg.com = server:https://dns.alidns.com/dns-query
+caiyunapp.com = server:https://dns.alidns.com/dns-query
+*.caiyunapp.com = server:https://dns.alidns.com/dns-query
+chaoxing.com = server:https://dns.alidns.com/dns-query
+*.chaoxing.com = server:https://dns.alidns.com/dns-query
+csdn.com = server:https://dns.alidns.com/dns-query
+*.csdn.com = server:https://dns.alidns.com/dns-query
+dbankcdn.com = server:https://dns.alidns.com/dns-query
+*.dbankcdn.com = server:https://dns.alidns.com/dns-query
+dianping.com = server:https://dns.alidns.com/dns-query
+*.dianping.com = server:https://dns.alidns.com/dns-query
+douban.com = server:https://dns.alidns.com/dns-query
+*.douban.com = server:https://dns.alidns.com/dns-query
+doubanio.com = server:https://dns.alidns.com/dns-query
+*.doubanio.com = server:https://dns.alidns.com/dns-query
+douc.cc = server:https://dns.alidns.com/dns-query
+*.douc.cc = server:https://dns.alidns.com/dns-query
+douyin.com = server:https://dns.alidns.com/dns-query
+*.douyin.com = server:https://dns.alidns.com/dns-query
+douyinliving.com = server:https://dns.alidns.com/dns-query
+*.douyinliving.com = server:https://dns.alidns.com/dns-query
+douyinpic.com = server:https://dns.alidns.com/dns-query
+*.douyinpic.com = server:https://dns.alidns.com/dns-query
+douyinstatic.com = server:https://dns.alidns.com/dns-query
+*.douyinstatic.com = server:https://dns.alidns.com/dns-query
+douyinvod.com = server:https://dns.alidns.com/dns-query
+*.douyinvod.com = server:https://dns.alidns.com/dns-query
+dpfile.com = server:https://dns.alidns.com/dns-query
+*.dpfile.com = server:https://dns.alidns.com/dns-query
+gcloudsdk.com = server:https://dns.alidns.com/dns-query
+*.gcloudsdk.com = server:https://dns.alidns.com/dns-query
+gh-proxy.com = server:https://dns.alidns.com/dns-query
+*.gh-proxy.com = server:https://dns.alidns.com/dns-query
+gh-proxy.org = server:https://dns.alidns.com/dns-query
+*.gh-proxy.org = server:https://dns.alidns.com/dns-query
+ghfast.top = server:https://dns.alidns.com/dns-query
+*.ghfast.top = server:https://dns.alidns.com/dns-query
+ghproxy.net = server:https://dns.alidns.com/dns-query
+*.ghproxy.net = server:https://dns.alidns.com/dns-query
+gifshow.com = server:https://dns.alidns.com/dns-query
+*.gifshow.com = server:https://dns.alidns.com/dns-query
+gov.cn = server:https://dns.alidns.com/dns-query
+*.gov.cn = server:https://dns.alidns.com/dns-query
+gtimg.cn = server:https://dns.alidns.com/dns-query
+*.gtimg.cn = server:https://dns.alidns.com/dns-query
+gtimg.com = server:https://dns.alidns.com/dns-query
+*.gtimg.com = server:https://dns.alidns.com/dns-query
+hdslb.com = server:https://dns.alidns.com/dns-query
+*.hdslb.com = server:https://dns.alidns.com/dns-query
+heytapmobi.com = server:https://dns.alidns.com/dns-query
+*.heytapmobi.com = server:https://dns.alidns.com/dns-query
+hitv.com = server:https://dns.alidns.com/dns-query
+*.hitv.com = server:https://dns.alidns.com/dns-query
+huawei.com = server:https://dns.alidns.com/dns-query
+*.huawei.com = server:https://dns.alidns.com/dns-query
+hunantv.com = server:https://dns.alidns.com/dns-query
+*.hunantv.com = server:https://dns.alidns.com/dns-query
+icourse163.org = server:https://dns.alidns.com/dns-query
+*.icourse163.org = server:https://dns.alidns.com/dns-query
+idqqimg.com = server:https://dns.alidns.com/dns-query
+*.idqqimg.com = server:https://dns.alidns.com/dns-query
+iesdouyin.com = server:https://dns.alidns.com/dns-query
+*.iesdouyin.com = server:https://dns.alidns.com/dns-query
+iot-tencent.com = server:https://dns.alidns.com/dns-query
+*.iot-tencent.com = server:https://dns.alidns.com/dns-query
+iqiyi.com = server:https://dns.alidns.com/dns-query
+*.iqiyi.com = server:https://dns.alidns.com/dns-query
+iqiyipic.com = server:https://dns.alidns.com/dns-query
+*.iqiyipic.com = server:https://dns.alidns.com/dns-query
+ithome.com = server:https://dns.alidns.com/dns-query
+*.ithome.com = server:https://dns.alidns.com/dns-query
+ixigua.com = server:https://dns.alidns.com/dns-query
+*.ixigua.com = server:https://dns.alidns.com/dns-query
+ixiguavideo.com = server:https://dns.alidns.com/dns-query
+*.ixiguavideo.com = server:https://dns.alidns.com/dns-query
+jd.com = server:https://dns.alidns.com/dns-query
+*.jd.com = server:https://dns.alidns.com/dns-query
+jd.hk = server:https://dns.alidns.com/dns-query
+*.jd.hk = server:https://dns.alidns.com/dns-query
+ksapisrv.com = server:https://dns.alidns.com/dns-query
+*.ksapisrv.com = server:https://dns.alidns.com/dns-query
+kuaishou.com = server:https://dns.alidns.com/dns-query
+*.kuaishou.com = server:https://dns.alidns.com/dns-query
+kugou.com = server:https://dns.alidns.com/dns-query
+*.kugou.com = server:https://dns.alidns.com/dns-query
+kuwo.cn = server:https://dns.alidns.com/dns-query
+*.kuwo.cn = server:https://dns.alidns.com/dns-query
+meituan.com = server:https://dns.alidns.com/dns-query
+*.meituan.com = server:https://dns.alidns.com/dns-query
+mgtv.com = server:https://dns.alidns.com/dns-query
+*.mgtv.com = server:https://dns.alidns.com/dns-query
+mi.com = server:https://dns.alidns.com/dns-query
+*.mi.com = server:https://dns.alidns.com/dns-query
+miaopai.com = server:https://dns.alidns.com/dns-query
+*.miaopai.com = server:https://dns.alidns.com/dns-query
+mihoyo.com = server:https://dns.alidns.com/dns-query
+*.mihoyo.com = server:https://dns.alidns.com/dns-query
+miui.com = server:https://dns.alidns.com/dns-query
+*.miui.com = server:https://dns.alidns.com/dns-query
+miwifi.com = server:https://dns.alidns.com/dns-query
+*.miwifi.com = server:https://dns.alidns.com/dns-query
+netease.com = server:https://dns.alidns.com/dns-query
+*.netease.com = server:https://dns.alidns.com/dns-query
+ngacn.cc = server:https://dns.alidns.com/dns-query
+*.ngacn.cc = server:https://dns.alidns.com/dns-query
+oppo.com = server:https://dns.alidns.com/dns-query
+*.oppo.com = server:https://dns.alidns.com/dns-query
+pddpic.com = server:https://dns.alidns.com/dns-query
+*.pddpic.com = server:https://dns.alidns.com/dns-query
+pddstatic.com = server:https://dns.alidns.com/dns-query
+*.pddstatic.com = server:https://dns.alidns.com/dns-query
+pinduoduo.com = server:https://dns.alidns.com/dns-query
+*.pinduoduo.com = server:https://dns.alidns.com/dns-query
+ppsimg.com = server:https://dns.alidns.com/dns-query
+*.ppsimg.com = server:https://dns.alidns.com/dns-query
+pstatp.com = server:https://dns.alidns.com/dns-query
+*.pstatp.com = server:https://dns.alidns.com/dns-query
+qiyi.com = server:https://dns.alidns.com/dns-query
+*.qiyi.com = server:https://dns.alidns.com/dns-query
+qiyipic.com = server:https://dns.alidns.com/dns-query
+*.qiyipic.com = server:https://dns.alidns.com/dns-query
+qlogo.cn = server:https://dns.alidns.com/dns-query
+*.qlogo.cn = server:https://dns.alidns.com/dns-query
+qpic.cn = server:https://dns.alidns.com/dns-query
+*.qpic.cn = server:https://dns.alidns.com/dns-query
+qq.com = server:https://dns.alidns.com/dns-query
+*.qq.com = server:https://dns.alidns.com/dns-query
+quark.cn = server:https://dns.alidns.com/dns-query
+*.quark.cn = server:https://dns.alidns.com/dns-query
+servicewechat.com = server:https://dns.alidns.com/dns-query
+*.servicewechat.com = server:https://dns.alidns.com/dns-query
+sina.com.cn = server:https://dns.alidns.com/dns-query
+*.sina.com.cn = server:https://dns.alidns.com/dns-query
+sinaimg.com = server:https://dns.alidns.com/dns-query
+*.sinaimg.com = server:https://dns.alidns.com/dns-query
+sinajs.cn = server:https://dns.alidns.com/dns-query
+*.sinajs.cn = server:https://dns.alidns.com/dns-query
+snssdk.com = server:https://dns.alidns.com/dns-query
+*.snssdk.com = server:https://dns.alidns.com/dns-query
+sohu.com = server:https://dns.alidns.com/dns-query
+*.sohu.com = server:https://dns.alidns.com/dns-query
+sspai.com = server:https://dns.alidns.com/dns-query
+*.sspai.com = server:https://dns.alidns.com/dns-query
+static.geetest.com = server:https://dns.alidns.com/dns-query
+*.static.geetest.com = server:https://dns.alidns.com/dns-query
+taobao.com = server:https://dns.alidns.com/dns-query
+*.taobao.com = server:https://dns.alidns.com/dns-query
+tencent.com = server:https://dns.alidns.com/dns-query
+*.tencent.com = server:https://dns.alidns.com/dns-query
+tenpay.com = server:https://dns.alidns.com/dns-query
+*.tenpay.com = server:https://dns.alidns.com/dns-query
+tmall.com = server:https://dns.alidns.com/dns-query
+*.tmall.com = server:https://dns.alidns.com/dns-query
+toutiao.com = server:https://dns.alidns.com/dns-query
+*.toutiao.com = server:https://dns.alidns.com/dns-query
+toutiaoapi.com = server:https://dns.alidns.com/dns-query
+*.toutiaoapi.com = server:https://dns.alidns.com/dns-query
+toutiaovod.com = server:https://dns.alidns.com/dns-query
+*.toutiaovod.com = server:https://dns.alidns.com/dns-query
+uc.cn = server:https://dns.alidns.com/dns-query
+*.uc.cn = server:https://dns.alidns.com/dns-query
+vivo.com = server:https://dns.alidns.com/dns-query
+*.vivo.com = server:https://dns.alidns.com/dns-query
+wechat.com = server:https://dns.alidns.com/dns-query
+*.wechat.com = server:https://dns.alidns.com/dns-query
+wechatlegal.net = server:https://dns.alidns.com/dns-query
+*.wechatlegal.net = server:https://dns.alidns.com/dns-query
+wechatos.net = server:https://dns.alidns.com/dns-query
+*.wechatos.net = server:https://dns.alidns.com/dns-query
+wechatpay.com = server:https://dns.alidns.com/dns-query
+*.wechatpay.com = server:https://dns.alidns.com/dns-query
+weibo.cn = server:https://dns.alidns.com/dns-query
+*.weibo.cn = server:https://dns.alidns.com/dns-query
+weibo.com = server:https://dns.alidns.com/dns-query
+*.weibo.com = server:https://dns.alidns.com/dns-query
+weibocdn.com = server:https://dns.alidns.com/dns-query
+*.weibocdn.com = server:https://dns.alidns.com/dns-query
+weixin.com = server:https://dns.alidns.com/dns-query
+*.weixin.com = server:https://dns.alidns.com/dns-query
+weixinbridge.com = server:https://dns.alidns.com/dns-query
+*.weixinbridge.com = server:https://dns.alidns.com/dns-query
+weixinsxy.com = server:https://dns.alidns.com/dns-query
+*.weixinsxy.com = server:https://dns.alidns.com/dns-query
+weiyun.com = server:https://dns.alidns.com/dns-query
+*.weiyun.com = server:https://dns.alidns.com/dns-query
+xhscdn.com = server:https://dns.alidns.com/dns-query
+*.xhscdn.com = server:https://dns.alidns.com/dns-query
+xhslink.com = server:https://dns.alidns.com/dns-query
+*.xhslink.com = server:https://dns.alidns.com/dns-query
+xiaohongshu.com = server:https://dns.alidns.com/dns-query
+*.xiaohongshu.com = server:https://dns.alidns.com/dns-query
+ximalaya.com = server:https://dns.alidns.com/dns-query
+*.ximalaya.com = server:https://dns.alidns.com/dns-query
+xmcdn.com = server:https://dns.alidns.com/dns-query
+*.xmcdn.com = server:https://dns.alidns.com/dns-query
+xuetangx.com = server:https://dns.alidns.com/dns-query
+*.xuetangx.com = server:https://dns.alidns.com/dns-query
+xuexi365.com = server:https://dns.alidns.com/dns-query
+*.xuexi365.com = server:https://dns.alidns.com/dns-query
+ykimg.com = server:https://dns.alidns.com/dns-query
+*.ykimg.com = server:https://dns.alidns.com/dns-query
+youku.com = server:https://dns.alidns.com/dns-query
+*.youku.com = server:https://dns.alidns.com/dns-query
+yuanshen.com = server:https://dns.alidns.com/dns-query
+*.yuanshen.com = server:https://dns.alidns.com/dns-query
+yximgs.com = server:https://dns.alidns.com/dns-query
+*.yximgs.com = server:https://dns.alidns.com/dns-query
+zhihu.com = server:https://dns.alidns.com/dns-query
+*.zhihu.com = server:https://dns.alidns.com/dns-query
+zhimg.com = server:https://dns.alidns.com/dns-query
+*.zhimg.com = server:https://dns.alidns.com/dns-query
+zijieapi.com = server:https://dns.alidns.com/dns-query
+*.zijieapi.com = server:https://dns.alidns.com/dns-query
+lf3-static.bytednsdoc.com = server:https://dns.alidns.com/dns-query
+douyincdn.com = server:https://dns.alidns.com/dns-query
+*.douyincdn.com = server:https://dns.alidns.com/dns-query
+idouyinvod.com = server:https://dns.alidns.com/dns-query
+*.idouyinvod.com = server:https://dns.alidns.com/dns-query
+zjcdn.com = server:https://dns.alidns.com/dns-query
+*.zjcdn.com = server:https://dns.alidns.com/dns-query
+sub-store.org = server:https://dns.alidns.com/dns-query
+appldnld-cdn.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+appldnld-cdn.origin-apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+appldnld.apple.com.mwcname.com = server:https://dns.alidns.com/dns-query
+gdmf-cdn.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+gdmf-cdn.origin-apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+gdmf-lb.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+gdmf.apple.com.mwcname.com = server:https://dns.alidns.com/dns-query
+gdmf.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+gg-cdn.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+gg-cdn.origin-apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+gg-lb.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+gg.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+gg.apple.com.mwcname.com = server:https://dns.alidns.com/dns-query
+gg.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+gnf-mdn.apple.com = server:https://dns.alidns.com/dns-query
+gnf-mr.apple.com = server:https://dns.alidns.com/dns-query
+iphonesubmissions-cdn.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+iphonesubmissions-cdn.origin-apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+iphonesubmissions-lb.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+iphonesubmissions.apple.com = server:https://dns.alidns.com/dns-query
+iphonesubmissions.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+iphonesubmissions.apple.com.mwcname.com = server:https://dns.alidns.com/dns-query
+iphonesubmissions.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+mesu-lb.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+mesu.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+mesu.apple.com.mwcname.com = server:https://dns.alidns.com/dns-query
+ns.itunes.apple.com = server:https://dns.alidns.com/dns-query
+ocsp-cdn.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+ocsp-cdn.origin-apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+ocsp.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+ocsp.apple.com.mwcname.com = server:https://dns.alidns.com/dns-query
+radarsubmissions-cdn.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+radarsubmissions-cdn.origin-apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+radarsubmissions-lb.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+radarsubmissions.apple.com = server:https://dns.alidns.com/dns-query
+radarsubmissions.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+radarsubmissions.apple.com.mwcname.com = server:https://dns.alidns.com/dns-query
+radarsubmissions.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+swpost.apple.com = server:https://dns.alidns.com/dns-query
+swscan-cdn.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+swscan-cdn.origin-apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+swscan-lb.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+swscan.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+swscan.apple.com.mwcname.com = server:https://dns.alidns.com/dns-query
+swscan.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+xp-cdn.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+xp-cdn.origin-apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+xp-lb.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+xp.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+xp.apple.com.mwcname.com = server:https://dns.alidns.com/dns-query
+xp.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+appldnld-lb.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+*.appldnld-lb.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+appldnld.apple.com = server:https://dns.alidns.com/dns-query
+*.appldnld.apple.com = server:https://dns.alidns.com/dns-query
+appldnld.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+*.appldnld.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+appldnld.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+*.appldnld.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+configuration.apple.com = server:https://dns.alidns.com/dns-query
+*.configuration.apple.com = server:https://dns.alidns.com/dns-query
+fcs-keys-pub-prod.cdn-apple.com = server:https://dns.alidns.com/dns-query
+*.fcs-keys-pub-prod.cdn-apple.com = server:https://dns.alidns.com/dns-query
+gdmf-ados.apple.com = server:https://dns.alidns.com/dns-query
+*.gdmf-ados.apple.com = server:https://dns.alidns.com/dns-query
+gdmf.apple.com = server:https://dns.alidns.com/dns-query
+*.gdmf.apple.com = server:https://dns.alidns.com/dns-query
+gdmf.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+*.gdmf.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+gg.apple.com = server:https://dns.alidns.com/dns-query
+*.gg.apple.com = server:https://dns.alidns.com/dns-query
+gs.apple.com = server:https://dns.alidns.com/dns-query
+*.gs.apple.com = server:https://dns.alidns.com/dns-query
+gsra.apple.com = server:https://dns.alidns.com/dns-query
+*.gsra.apple.com = server:https://dns.alidns.com/dns-query
+ig.apple.com = server:https://dns.alidns.com/dns-query
+*.ig.apple.com = server:https://dns.alidns.com/dns-query
+mesu-cdn.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+*.mesu-cdn.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+mesu-cdn.origin-apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+*.mesu-cdn.origin-apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+mesu.apple.com = server:https://dns.alidns.com/dns-query
+*.mesu.apple.com = server:https://dns.alidns.com/dns-query
+mesu.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+*.mesu.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+ocsp-lb.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+*.ocsp-lb.apple.com.akadns.net = server:https://dns.alidns.com/dns-query
+ocsp.apple.com = server:https://dns.alidns.com/dns-query
+*.ocsp.apple.com = server:https://dns.alidns.com/dns-query
+ocsp.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+*.ocsp.g.aaplimg.com = server:https://dns.alidns.com/dns-query
+oscdn.apple.com = server:https://dns.alidns.com/dns-query
+*.oscdn.apple.com = server:https://dns.alidns.com/dns-query
+osrecovery.apple.com = server:https://dns.alidns.com/dns-query
+*.osrecovery.apple.com = server:https://dns.alidns.com/dns-query
+skl.apple.com = server:https://dns.alidns.com/dns-query
+*.skl.apple.com = server:https://dns.alidns.com/dns-query
+swcdn.apple.com = server:https://dns.alidns.com/dns-query
+*.swcdn.apple.com = server:https://dns.alidns.com/dns-query
+swdist.apple.com = server:https://dns.alidns.com/dns-query
+*.swdist.apple.com = server:https://dns.alidns.com/dns-query
+swdownload.apple.com = server:https://dns.alidns.com/dns-query
+*.swdownload.apple.com = server:https://dns.alidns.com/dns-query
+swscan.apple.com = server:https://dns.alidns.com/dns-query
+*.swscan.apple.com = server:https://dns.alidns.com/dns-query
+updates-http.cdn-apple.com = server:https://dns.alidns.com/dns-query
+*.updates-http.cdn-apple.com = server:https://dns.alidns.com/dns-query
+updates.cdn-apple.com = server:https://dns.alidns.com/dns-query
+*.updates.cdn-apple.com = server:https://dns.alidns.com/dns-query
+wkms-public.apple.com = server:https://dns.alidns.com/dns-query
+*.wkms-public.apple.com = server:https://dns.alidns.com/dns-query
+xp.apple.com = server:https://dns.alidns.com/dns-query
+*.xp.apple.com = server:https://dns.alidns.com/dns-query
+csgo.wmsj.cn = server:https://dns.alidns.com/dns-query
+dl.steam.clngaa.com = server:https://dns.alidns.com/dns-query
+dl.steam.ksyna.com = server:https://dns.alidns.com/dns-query
+dota2.wmsj.cn = server:https://dns.alidns.com/dns-query
+st.dl.bscstorage.net = server:https://dns.alidns.com/dns-query
+st.dl.eccdnx.com = server:https://dns.alidns.com/dns-query
+st.dl.pinyuncloud.com = server:https://dns.alidns.com/dns-query
+steampipe.steamcontent.tnkjmec.com = server:https://dns.alidns.com/dns-query
+steampowered.com.8686c.com = server:https://dns.alidns.com/dns-query
+steamstatic.com.8686c.com = server:https://dns.alidns.com/dns-query
+wmsjsteam.com = server:https://dns.alidns.com/dns-query
+xz.pphimalayanrt.com = server:https://dns.alidns.com/dns-query
+steamchina.com = server:https://dns.alidns.com/dns-query
+*.steamchina.com = server:https://dns.alidns.com/dns-query
+
+[Rewrite]
+request if ${url} ~= /^https:\/\/api-marketing\.zhinengxiyifang\.cn\/api\/v2\/user\/blacklist\/check/i then reject_dict(200)
+
+[Script]
+
+
+[Remote Script]
+
+
+[Plugin]
+https://yfamilys.com/plugin/DisableUpdate.plugin, enabled=true
+https://yfamilys.com/plugin/adultraplus.plugin, enabled=false
+https://yfamilys.com/plugin/CamScanner.plugin, enabled=true
+http://script.hub/file/_start_/https://raw.githubusercontent.com/NobyDa/Script/master/QuantumultX/Snippet/GoogleCAPTCHA.snippet/_end_/GoogleCAPTCHA.plugin?type=qx-rewrite&target=loon-plugin&del=true&jqEnabled=true, tag=谷歌防人机验证, img-url=https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Google.png, enabled=true
+https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/plugin/blockAds.plugin, enabled=false
+https://raw.githubusercontent.com/MaYIHEI/patch/refs/heads/main/scripting/loon-panel/loon/loon-panel.lpx, tag=loon-panel, enabled=true
+https://raw.githubusercontent.com/MaYIHEI/paperclip/refs/heads/main/loon/ipquality-web-test/ipquality-web-test.lpx?v=poc12, enabled=true
+https://kelee.one/Tool/Loon/Lpx/QuickSearch.lpx, enabled=false
+https://kelee.one/Tool/Loon/Lpx/NodeLinkCheck.lpx, enabled=false
+https://kelee.one/Tool/Loon/Lpx/Block_HTTPDNS.lpx, pin=true, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Prevent_DNS_Leaks.lpx, policy=时延优选, pin=true, enabled=true
+https://kelee.one/Tool/Loon/Lpx/BlockAdvertisers.lpx, pin=true, enabled=true
+https://kelee.one/Tool/Loon/Lpx/SuZhouCitizenCard_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/ChaoXingStudy_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/RedPaper_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/FleaMarket_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/WexinMiniPrograms_Remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Weixin_external_links_unlock.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Weixin_Official_Accounts_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/NeteaseCloudMusic_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Taobao_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/ShandongSchool_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/LuckinCoffee_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/PinDuoDuo_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Remove_ads_by_keli.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/JDWaimai_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/JD_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/JD_Price.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/MrHema_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Amap_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/DiDi_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Cainiao_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Bilibili_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/BaiduSearchWebpage_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/BaiduNetDisk_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/YouTube_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/YouTubeSubtitlesTranslation.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/WARP_Node_Query.lpx, enabled=false
+https://kelee.one/Tool/Loon/Lpx/WakeupSchedule_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/TelegramRedirect.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Reddit_remove_ads.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/QQ_Redirect.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Google.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/BoxJs.lpx, enabled=true
+https://kelee.one/Tool/Loon/Lpx/12306_remove_ads.lpx, enabled=true
+# 插件规则优先于远程规则；考考鸭与 WeatherKit 会提交 MITM 响应修改。
+http://script.hub/file/_start_/https://raw.githubusercontent.com/WeiGiegie/666/main/kaokaoya.js/_end_/kaokaoya.plugin?type=qx-rewrite&target=loon-plugin&del=true&jqEnabled=true, tag=Kaokaoya, enabled=true
+https://github.com/NSRingo/WeatherKit/releases/latest/download/iRingo.WeatherKit.lpx, tag=WeatherKit, enabled=true
+https://kelee.one/Tool/Loon/Lpx/Sub-Store.lpx, policy=时延优选, tag=Sub-Store, enabled=true
+https://loon.103516.xyz/Plugin/BoxJs.lpx, policy=时延优选, tag=BoxJs, enabled=true
+https://loon.103516.xyz/Plugin/Script-Hub.lpx, policy=时延优选, tag=Script-Hub, enabled=true
+
+[MITM]
+skip-server-cert-verify = false
+# 私人 ca-p12 已删除；Loon 使用本机生成的 MitM CA。
+# 私人 ca-passphrase 已删除。
+hostname = -*.cmbchina.com,-*.boc.cn,-*.ccb.com,-*.icbc.com.cn,-*.abchina.com,-*.psbc.com,-*.bankofchina.com,-*.95559.com.cn,-*.12123.com,-api.huachenjie.com
