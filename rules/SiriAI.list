@@ -1,0 +1,88 @@
+# NAME: Siri AI
+# UPDATED: 2026-11-13
+# TOTAL: 70
+# FORMAT: Loon remote rules; select the Siri AI policy on import.
+# Shared iCloud, Apple Account and ChatGPT dependencies are included intentionally.
+# Sources and scope: https://github.com/GoldenLoaf24h/goldenloafs-loon/blob/main/rules/README.md
+
+# Siri, Search, Private Cloud Compute and Apple Intelligence extensions
+DOMAIN,api-siri-prod.apple.com
+DOMAIN,guzzoni.apple.com
+DOMAIN-SUFFIX,siri.apple.com
+DOMAIN-SUFFIX,smoot.apple.com
+DOMAIN-SUFFIX,apple-relay.apple.com
+DOMAIN-SUFFIX,apple-relay.cloudflare.com
+DOMAIN-SUFFIX,apple-relay.fastly-edge.com
+DOMAIN-SUFFIX,apple-relay.akamaized.net
+DOMAIN-SUFFIX,cp4.cloudflare.com
+
+# Shared iCloud / CloudKit / Private Relay / Apple Account dependencies
+DOMAIN-SUFFIX,apple-cloudkit.com
+DOMAIN-SUFFIX,apple-dns.net
+DOMAIN-SUFFIX,icloud-content.com
+DOMAIN-SUFFIX,gateway.icloud.com
+DOMAIN-SUFFIX,mask.icloud.com
+DOMAIN-SUFFIX,mask-h2.icloud.com
+DOMAIN-SUFFIX,mask-api.icloud.com
+DOMAIN,p150-acsegateway.icloud.com
+DOMAIN,setup.icloud.com
+DOMAIN,account.apple.com
+DOMAIN,appleid.cdn-apple.com
+DOMAIN,idmsa.apple.com
+DOMAIN,gsa.apple.com
+
+# Shared location, content and update services retained for compatibility
+DOMAIN-SUFFIX,ls.apple.com
+DOMAIN,gs-loc-c.apple.com
+DOMAIN-SUFFIX,itunes.apple.com
+DOMAIN-SUFFIX,apps.mzstatic.com
+DOMAIN,mesu.apple.com
+DOMAIN,xp.apple.com
+
+# ChatGPT extension: OpenAI services, assets and voice
+DOMAIN-SUFFIX,openai.com
+DOMAIN-SUFFIX,chatgpt.com
+DOMAIN-SUFFIX,oaistatic.com
+DOMAIN-SUFFIX,oaiusercontent.com
+DOMAIN-SUFFIX,oaistatsig.com
+DOMAIN-SUFFIX,openai.com.cdn.cloudflare.net
+DOMAIN-SUFFIX,chatgpt.livekit.cloud
+DOMAIN-SUFFIX,host.livekit.cloud
+DOMAIN-SUFFIX,turn.livekit.cloud
+DOMAIN,cdn.openaimerge.com
+DOMAIN,openaiassets.blob.core.windows.net
+DOMAIN,openaiapi-site.azureedge.net
+DOMAIN,openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net
+DOMAIN,openaicomproductionae4b.blob.core.windows.net
+DOMAIN,production-openaicom-storage.azureedge.net
+DOMAIN,openaicom.imgix.net
+
+# Shared authentication, challenge and iOS app validation services
+DOMAIN-SUFFIX,auth0.com
+DOMAIN-SUFFIX,openai-api.arkoselabs.com
+DOMAIN-SUFFIX,client-api.arkoselabs.com
+DOMAIN,challenges.cloudflare.com
+DOMAIN,cdn.workos.com
+DOMAIN,forwarder.workos.com
+DOMAIN,frontend-apps-multi-region.workos.com
+DOMAIN,setup.workos.com
+DOMAIN,images.workoscdn.com
+DOMAIN,workos.imgix.net
+DOMAIN,humb.apple.com
+DOMAIN-SUFFIX,appattest.apple.com
+DOMAIN-SUFFIX,identrust.com
+
+# Shared feature flags, support, payments and diagnostics used by ChatGPT
+DOMAIN-SUFFIX,api.statsig.com
+DOMAIN-SUFFIX,events.statsigapi.net
+DOMAIN-SUFFIX,featuregates.org
+DOMAIN-SUFFIX,intercom.io
+DOMAIN-SUFFIX,intercomcdn.com
+DOMAIN-SUFFIX,ct.sendgrid.net
+DOMAIN,js.stripe.com
+DOMAIN-SUFFIX,browser-intake-datadoghq.com
+DOMAIN,o207216.ingest.sentry.io
+DOMAIN,o33249.ingest.sentry.io
+DOMAIN,o33249.ingest.us.sentry.io
+DOMAIN,static.cloudflareinsights.com
+DOMAIN,openai.qualtrics.com
