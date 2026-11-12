@@ -13,5 +13,17 @@
 在 Loon 策略组中使用：
 
 ```text
-img-url = https://raw.githubusercontent.com/GoldenLoaf24h/goldenloafs-loon/main/icons/siri.png
+img-url = https://cdn.jsdelivr.net/gh/GoldenLoaf24h/goldenloafs-loon@main/icons/siri.png
+```
+
+如果要把整个目录作为 Loon 图标集合导入，请使用 JSON 索引：
+
+```text
+https://raw.githubusercontent.com/GoldenLoaf24h/goldenloafs-loon/main/icons/iconset.json
+```
+
+Raw 访问缓慢时的 CDN 地址：
+
+```text
+https://cdn.jsdelivr.net/gh/GoldenLoaf24h/goldenloafs-loon@main/icons/iconset.json
 ```

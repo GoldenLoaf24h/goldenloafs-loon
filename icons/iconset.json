@@ -1,0 +1,10 @@
+{
+  "name": "GoldenLoaf's Loon",
+  "icons": [
+    {
+      "name": "Siri.png",
+      "url": "https://cdn.jsdelivr.net/gh/GoldenLoaf24h/goldenloafs-loon@main/icons/siri.png"
+    }
+  ],
+  "description": "GoldenLoaf 的 Loon 自定义策略组图标集"
+}
