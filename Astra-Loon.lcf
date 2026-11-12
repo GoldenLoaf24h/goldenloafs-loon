@@ -80,7 +80,7 @@ Sub-家宽 = NameRegex, FilterKey = "(?i)^(?!.*美国12家宽)(?=.*(?:家宽|住
 低-倍率 = url-test,低倍率,interval = 180,tolerance = 80,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Cellular.png
 防被墙 = url-test,美国节点,日本节点,新加坡节点,interval = 180,tolerance = 50,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Clubhouse_2.png
 AI = select,防被墙,家宽组,新加坡节点,日本节点,手动选择,img-url = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bot.png
-Siri AI = select,防被墙,美国节点,日本节点,新加坡节点,家宽组,img-url = https://raw.githubusercontent.com/luestr/IconResource/main/App_icon/120px/Siri.png
+Siri AI = select,防被墙,美国节点,日本节点,新加坡节点,家宽组,img-url = https://cdn.jsdelivr.net/gh/GoldenLoaf24h/goldenloafs-loon@main/icons/siri.png
 Claude = select,家宽组,新加坡节点,日本节点,手动选择,img-url = https://fastly.jsdelivr.net/gh/Hawaiine/Oasisic-Icons@main/icons/AI/Anthropic/Anthropic.png
 ChatGPT = select,防被墙,家宽组,新加坡节点,日本节点,手动选择,img-url = https://fastly.jsdelivr.net/gh/Hawaiine/Oasisic-Icons@main/icons/AI/OpenAI/OpenAI.png
 Gemini = select,防被墙,家宽组,新加坡节点,日本节点,手动选择,img-url = https://fastly.jsdelivr.net/gh/Hawaiine/Oasisic-Icons@main/icons/Google/GoogleAI/GoogleAI.png

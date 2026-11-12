@@ -21,6 +21,7 @@ GoldenLoaf 的 Loon 配置与自定义策略组图标。
 ## 图标集合
 
 图标统一按常见 Loon/Qure 资源规格整理为 `144×144` RGBA PNG。
+仓库中的 `Astra-Loon.lcf` 已将 `Siri AI` 策略组直接绑定到 `siri.png`。
 
 在 Loon 的“策略 → 图标集合 → 添加”中，应导入 JSON 索引，而不是单张 PNG：
 
