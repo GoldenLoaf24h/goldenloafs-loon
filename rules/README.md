@@ -31,6 +31,13 @@ https://raw.githubusercontent.com/GoldenLoaf24h/goldenloafs-loon/main/rules/Siri
 - 未加入 `smp-device-content.apple.com`：Apple 官方用途是 ID Verifier；未加入 `ai.com`：截至整理日期，官网为独立 AI 产品，并非 OpenAI 的 Siri 扩展依赖。
 - 将原 `DOMAIN-KEYWORD,siri` 改为明确的 Siri 域名，避免任意包含 `siri` 字符的无关网站命中。没有扩大到整个 Apple、iCloud、Cloudflare、Amazon 域名空间或云服务商 ASN/IP 段。
 
+## 2026-11-13 补充核对
+
+- 对照 ddgksf2013 的 11 条规则，将 `api-siri-prod.apple.com`、`guzzoni.apple.com` 从精确匹配改为后缀匹配，覆盖其本域及子域；其余条目均已覆盖。总数仍为 70 条。
+- 对照 RocM301 的 19 条规则，17 条域名规则已覆盖；`DOMAIN-KEYWORD,siri` 仍采用上文的明确域名方案。
+- RocM301 额外列出的 `wps.apple.com` 暂不收录。现有技术观察将其识别为 Apple Web Privacy Service，用于 Safari/WebPrivacy 隐私保护列表更新；尚未找到它是 Siri/PCC 必需依赖的证据。不是所有 Apple 隐私服务都等同于 Apple Intelligence 中继。
+- 此次只调整两条规则的匹配范围，现有 iCloud/CloudKit 和 ChatGPT 兼容依赖全部保留。未通过 iPhone 实际调用验证这些子域是否被使用；该调整用于与维护规则的匹配范围对齐。
+
 ## 影响与边界
 
 前置使用时，匹配到的 iCloud/CloudKit 同步、Apple 登录、地图定位、部分商店/更新请求、独立 ChatGPT 及第三方共享服务也会走 `Siri AI`，可能增加代理流量。这是为完整兼容保留共享依赖的结果；按域名无法区分同一服务由 Siri 还是其他 App 调用。
@@ -44,6 +51,9 @@ https://raw.githubusercontent.com/GoldenLoaf24h/goldenloafs-loon/main/rules/Siri
 - [Apple 官方：企业网络所需主机](https://support.apple.com/en-us/101555)：Siri/PCC、iCloud、账户、内容和设备验证用途。
 - [OpenAI 官方：ChatGPT 网络建议](https://help.openai.com/en/articles/9247338-network-recommendations-for-chatgpt-errors-on-web-and-apps)：共享登录、资源、支持和验证依赖。
 - [Serein1202 原 AppleIntelligence 规则](https://github.com/Serein1202/ProxyHome/blob/main/Loon/Rule/AppleIntelligence/AppleIntelligence.list)：原配置使用的 21 项及兼容域名参考。
+- [RocM301 Apple-AI 规则](https://raw.githubusercontent.com/RocM301/Apple-Rule/refs/heads/main/Apple-AI.list)：补充核对 19 条规则。
+- [ddgksf2013 AppleIntelligence 规则](https://raw.githubusercontent.com/ddgksf2013/Filter/refs/heads/master/AppleIntelligence.list)：补充核对 11 条规则及 Siri 主机的后缀匹配范围。
+- [Jeff Johnson 的 Safari 连接观察](https://www.lapcatsoftware.com/articles/2026/9/10.html)及 [WebPrivacy 技术说明](https://bytetally.app/en/process/webprivacyd/)：`wps.apple.com` 的用途参考，属于第三方技术观察而非 Apple 官方 Siri 必需域名清单。
 - [blackmatrix7 OpenAI 规则](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/OpenAI/OpenAI.list)：OpenAI 第三方依赖及资源主机参考。
 - [MetaCubeX OpenAI 规则](https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/openai.list)：Azure、存储、语音等主机交叉核对。
 - [ai.com 官方产品说明](https://ai.com/company-news/ai-com-launch)：确认其现为独立产品。

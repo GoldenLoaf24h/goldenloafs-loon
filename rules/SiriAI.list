@@ -6,8 +6,8 @@
 # Sources and scope: https://github.com/GoldenLoaf24h/goldenloafs-loon/blob/main/rules/README.md
 
 # Siri, Search, Private Cloud Compute and Apple Intelligence extensions
-DOMAIN,api-siri-prod.apple.com
-DOMAIN,guzzoni.apple.com
+DOMAIN-SUFFIX,api-siri-prod.apple.com
+DOMAIN-SUFFIX,guzzoni.apple.com
 DOMAIN-SUFFIX,siri.apple.com
 DOMAIN-SUFFIX,smoot.apple.com
 DOMAIN-SUFFIX,apple-relay.apple.com
